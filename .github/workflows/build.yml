@@ -1,0 +1,47 @@
+name: Build OpenRGB Windows
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build_windows_64:
+    runs-on: windows-2022
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v3
+        with:
+          version: '5.15.2'
+          host: 'windows'
+          target: 'desktop'
+          arch: 'win64_msvc2019_64'
+
+      - name: Setup MSVC Compiler and Build
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Compile OpenRGB
+        shell: cmd
+        run: |
+          qmake OpenRGB.pro
+          nmake release
+
+      - name: Prepare Release Folder
+        shell: cmd
+        run: |
+          mkdir OpenRGB_Windows_64
+          copy release\OpenRGB.exe OpenRGB_Windows_64\
+          windeployqt --release --no-translations OpenRGB_Windows_64\OpenRGB.exe
+          copy dependencies\hidapi-win\x64\hidapi.dll OpenRGB_Windows_64\ || echo "Copied via windeployqt"
+
+      - name: Upload Built OpenRGB
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenRGB_Aula_F75_Max_Win64
+          path: OpenRGB_Windows_64/
