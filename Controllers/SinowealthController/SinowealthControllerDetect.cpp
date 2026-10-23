@@ -457,3 +457,7 @@ REGISTER_HID_DETECTOR_IPU("Sinowealth Keyboard",            DetectSinowealthKeyb
 // Sinowealth keyboards are disabled due to VID/PID pairs being reused from Redragon keyboards, which ended up in bricking the latter
 //REGISTER_HID_DETECTOR_P("FL ESPORTS F11",                   DetectSinowealthKeyboard,   SINOWEALTH_VID, Fl_Esports_F11_PID,                             0xFF00          );
 //REGISTER_HID_DETECTOR_P("Sinowealth Keyboard",              DetectSinowealthKeyboard16, SINOWEALTH_VID, RGB_KEYBOARD_0016PID,                           0xFF00          );
+/*-------------------------------------------------------------------------*\
+| Aula F75 Max (0C45:800A) on Interface 3 (UsagePage 0xFF13)                |
+\*-------------------------------------------------------------------------*/
+REGISTER_HID_DETECTOR_IPU("Aula F75 Max", DetectSinowealthKeyboards, 0x0C45, 0x800A, 3, 0xFF13, 0x0001);
